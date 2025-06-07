@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ChatBox from "../components/ChatBox";
 import { api } from "../services/api";
+import ListaMessagens from "../components/ListaMessagens";
 const ChatReceitas = () => {
   const [loading, setLoading] = useState(false);
   const [mensagens, setMensagens] = useState([
