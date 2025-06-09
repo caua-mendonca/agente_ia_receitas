@@ -1,13 +1,14 @@
 import { useState } from "react";
 import ChatBox from "../components/ChatBox";
-import { api } from "../services/api";
+import { api } from "../services/api"; // Assumindo que 'api' está corretamente definido em outro lugar
 import ListaMessagens from "../components/ListaMessagens";
+
 const ChatReceitas = () => {
   const [loading, setLoading] = useState(false);
   const [mensagens, setMensagens] = useState([
     {
       id: 1,
-      text: "Olá, Sou seu assitente de receitas. Como posso ajudar você hoje?",
+      text: "Olá, Sou seu assistente de receitas. Como posso ajudar você hoje?",
       remetente: "bot",
     },
   ]);
@@ -15,7 +16,7 @@ const ChatReceitas = () => {
   const onEnviarMensagem = async (mensagem) => {
     const NovaMensagemUsuario = {
       id: Date.now(),
-      texto: mensagem,
+      text: mensagem,
       remetente: "usuario",
     };
 
@@ -23,25 +24,25 @@ const ChatReceitas = () => {
     setLoading(true);
 
     try {
+      // Assumindo que 'api' retorna o texto da resposta diretamente
       const resposta = await api(mensagem);
 
       const novaMensagemBot = {
         id: Date.now(),
-        texto: resposta,
+        text: resposta,
         remetente: "bot",
       };
 
       setMensagens((prev) => [...prev, novaMensagemBot]);
     } catch (error) {
       console.error(error);
-      const NovaMensagemUsuario = {
+      const NovaMensagemErroBot = {
         id: Date.now(),
-        texto:
-          "Desculpe, ocorreu um erro ao processar sua pergunta. Tente Novamente!",
+        text: "Desculpe, ocorreu um erro ao processar sua pergunta. Tente novamente!",
         remetente: "bot",
       };
 
-      setMensagens((prev) => [...prev, NovaMensagemUsuario]);
+      setMensagens((prev) => [...prev, NovaMensagemErroBot]);
     } finally {
       setLoading(false);
     }
@@ -55,11 +56,12 @@ const ChatReceitas = () => {
             🍳 Dev Chef
           </h1>
           <p className="text-gray-600 text-lg">
-            Seu assitente pessoal para receitas deliciosas
+            Seu assistente pessoal para receitas deliciosas
           </p>
         </header>
 
         <div className="bg-white/70 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl h-[600px] border border-gray-100 flex flex-col">
+          {/* Certifique-se de que ListaMessagens esteja esperando a prop 'mensagens' com a propriedade 'text' */}
           <ListaMessagens mensagens={mensagens} loading={loading} />
           <ChatBox onEnviarMensagem={onEnviarMensagem} desabilitado={loading} />
         </div>

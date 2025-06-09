@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+
 const ChatBox = ({ onEnviarMensagem, desabilitado }) => {
   const [mensagem, setMensagem] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onEnviarMensagem(mensagem);
-    setMensagem("");
+    if (mensagem.trim()) { // Impede o envio de mensagens vazias ou apenas com espaços em branco
+      onEnviarMensagem(mensagem.trim());
+      setMensagem("");
+    }
   };
 
   return (
@@ -21,8 +24,8 @@ const ChatBox = ({ onEnviarMensagem, desabilitado }) => {
         />
         <button
           type="submit"
-          disabled={desabilitado}
-          className="px-8 py-3 bg-gradient-to-r from-purple-500 to-emerald-500 hover:from=purple-600 hover:to-emerald-700 cursor-pointer text-white rounded-full disabled:from-gray-400 disabled:to-gray-300 disabled:cursor-not-allowed"
+          disabled={desabilitado || !mensagem.trim()} // Desabilita se a mensagem estiver vazia
+          className="px-8 py-3 bg-gradient-to-r from-purple-500 to-emerald-500 hover:from-purple-600 hover:to-emerald-700 cursor-pointer text-white rounded-full disabled:from-gray-400 disabled:to-gray-300 disabled:cursor-not-allowed"
         >
           Enviar
         </button>
